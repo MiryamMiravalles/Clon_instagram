@@ -1,7 +1,8 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import dotenv from 'dotenv';
+
+import routes from './routes/index.js';
 
 const server = express();
 
@@ -9,7 +10,8 @@ server.use(morgan("dev"));
 server.use(express.json());
 server.use(cors());
 
-import routes from './routes/index.js';
+//middlewares de rutas
+server.use(routes);
 
 
 

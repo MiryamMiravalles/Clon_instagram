@@ -1,37 +1,40 @@
-var dotenv = require('dotenv');
-var mysql = require('mysql2/promise');
-const { v4: uuidv4 } = require('uuid');
+import getPool from './getPool.js';
+import dotenv from 'dotenv';
+import {v4 as uuidv4} from 'uuid';
+
 // Generar un UUID
 const newUUID = uuidv4();
 
 dotenv.config();
 
-var MYSQL_HOST = process.env.MYSQL_HOST;
-var MYSQL_USER = process.env.MYSQL_USER;
-var MYSQL_PASS = process.env.MYSQL_PASSWORD;
-var MYSQL_DB = process.env.MYSQL_DATABASE;
+const initDB = async () => {
+    try {
 
-async function createTable() {
-  try {
-    const connection = await mysql.createConnection({
-      host: MYSQL_HOST,
-      user: MYSQL_USER,
-      password: MYSQL_PASS,
-      database: MYSQL_DB,
-    });
+        let pool = await getPool();
 
-    // Consulta SQL para crear la tabla 'users'
-    const createUserTableQuery = `
-      CREATE TABLE IF NOT EXISTS users (
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        password VARCHAR(100) NOT NULL,
-        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        console.log('Creando base de datos...');
+        await pool.query('CREATE DATABASE IF NOT EXISTS instahab');
+
+        console.log('Usando la base de datos...');
+        await pool.query('USE instahab');
+
+        console.log('Eliminando tablas si existen...');
+        await pool.query('DROP TABLE IF EXISTS users, posts, anonymous_users, likes');
+       
+
+        // Consulta SQL para crear la tabla 'users'
+        console.log('Creando tablas...');
+        await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+          id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+          email VARCHAR(100) UNIQUE NOT NULL,
+          password VARCHAR(100) NOT NULL,
+          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
-    `;
+    `);
 
-    // Consulta SQL para crear la tabla 'posts'
-    const createPostsTableQuery = `
+      // Consulta SQL para crear la tabla 'posts'
+      await pool.query(`
       CREATE TABLE IF NOT EXISTS posts (
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         user_id INT UNSIGNED NOT NULL,
@@ -40,19 +43,19 @@ async function createTable() {
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
-    `;
+    `);
 
     // Consulta SQL para crear la tabla 'anonymous_users'
-    const createAnonymousUsersTableQuery = `
+    await pool.query( `
       CREATE TABLE IF NOT EXISTS anonymous_users (
         id VARCHAR(36) PRIMARY KEY ,
         name_a VARCHAR(100) NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
-    `;
+    `);
 
     // Consulta SQL para crear la tabla 'likes'
-    const createLikesTableQuery = `
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS likes (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         user_id INT UNSIGNED NOT NULL,
@@ -62,26 +65,23 @@ async function createTable() {
         FOREIGN KEY (post_id) REFERENCES posts(id),
         UNIQUE KEY unique_like (user_id, post_id)  -- Asegura que un usuario solo pueda dar un like a un post una vez
       )
-    `;
+    `);
 
     // Ejecutar las consultas para crear las tablas
-    await connection.query(createUserTableQuery);
+
     console.log('Tabla "users" creada correctamente.');
 
-    await connection.query(createPostsTableQuery);
     console.log('Tabla "posts" creada correctamente.');
 
-    await connection.query(createAnonymousUsersTableQuery);
     console.log('Tabla "anonymous_users" creada correctamente.');
 
-    await connection.query(createLikesTableQuery);
     console.log('Tabla "likes" creada correctamente.');
 
-    connection.end(); // Cerrar la conexión
-  } catch (error) {
-    console.error('Error al crear las tablas:', error);
-  }
-}
 
-// Llamar a la función para crear las tablas
-createTable();
+    } catch (error) {
+        console.error('Error al crear las tablas: ', error);
+}
+};
+
+// Llamar a la función para crear tablas
+initDB();
