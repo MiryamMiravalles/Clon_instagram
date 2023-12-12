@@ -13,8 +13,6 @@ server.use(cors());
 //middlewares de rutas
 server.use(routes);
 
-
-
 server.use((req,res) => {
     res.status(404).send({
         status: 'Error!',
