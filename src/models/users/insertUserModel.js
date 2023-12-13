@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt';
 import getPool from '../../db/getPool.js';
 
+import sendMailUtil from '../../util/sendMailUtil.js';
+
 import {
-    userAllReadyRegistratedError,
-    emailAllReadyRegistratedError
+    emailAllReadyRegistratedError,
+    userAllReadyRegistratedError
 } from '../../services/errorService.js';
 
 const insertUserModel = async (username, email, password, registrationCode) => {
@@ -11,7 +13,7 @@ const insertUserModel = async (username, email, password, registrationCode) => {
 
     let [user] = await pool.query(
         `
-            SELECTO id FROM users WHERE username = ?
+            SELECT id FROM users WHERE username = ?
         `,
         [username]
     );
@@ -22,7 +24,7 @@ const insertUserModel = async (username, email, password, registrationCode) => {
 
     [user] = await pool.query(
         `
-            SELECT id FRONM users WHERE email = ?
+            SELECT id FROM users WHERE email = ?
         `,
         [email]
     );
@@ -39,9 +41,11 @@ const insertUserModel = async (username, email, password, registrationCode) => {
         !Bienvenid@ ${username}!
 
         Gracias por registrarte en Insta HAb. Para activar tu cuenta haz click en el siguiente enlace:
+    
         <a href="http://localhost:3001/users/validate/${registrationCode}">Activar mi cuenta</a>
     `
-    await senMailUtil(email,emailSubject,emailBody);
+
+    await sendMailUtil(email,emailSubject,emailBody);
 
     const hashedPassword = await bcrypt.hash(password,10);
 
@@ -54,5 +58,4 @@ const insertUserModel = async (username, email, password, registrationCode) => {
     );
 }
 
-
-export default insertUserModels;
+export default insertUserModel;
