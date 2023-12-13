@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
-const { generateError } = require('../helpers');
-const { getConnection } = require('./getPool');
-const { v4: uuidv4 } = require('uuid');
+import bcrypt from 'bcrypt';
+import { generateError } from '../helpers';
+import { getConnection } from './getPool';
+import { v4 as uuidv4 } from 'uuid';
 
 
 // Devuelve la información pública de un usuario por su email
@@ -110,8 +110,8 @@ await connection.query(
 };
 
 
-module.exports = {
+export {
   createUser,
   getUserById,
   getUserByEmail,
-}
+};

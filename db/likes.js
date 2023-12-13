@@ -1,12 +1,12 @@
-const { generateError } = require('../helpers');
-const { getConnection } = require('./getPool');
+// import { generateError }  from '../helpers';
+import { getConnection }  from '../src/db/getPool';
 
 const addLikeToPost = async (postId, userId) => {
     let connection;
   
     try {
       connection = await getConnection();
-  
+
       // Añadir un nuevo like a la tabla 'likes'
       await connection.query(
         `
@@ -44,7 +44,7 @@ const addLikeToPost = async (postId, userId) => {
         DELETE FROM likes
         WHERE user_id = ? AND post_id = ?
       `,
-        [userId, postId]
+      [userId, postId]
       );
   
       // Decrementar el contador de likes en la tabla 'posts'
@@ -63,8 +63,8 @@ const addLikeToPost = async (postId, userId) => {
     }
   };
   
-  module.exports = {
-       addLikeToPost, 
+  export {
+    addLikeToPost, 
     removeLikeFromPost
   };
   
