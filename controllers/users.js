@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { generateError } from '../helpers';
 import { createUser, getUserById, getUserByEmail } from '../db/users';
