@@ -56,7 +56,7 @@ const addLikeToPost = async (postId, userId) => {
       `,
         [postId]
       );
-  
+   
       return;
     } finally {
       if (connection) connection.release();

@@ -8,7 +8,7 @@ import db from '../db/posts';
 const addLikeController = (req,res) => {
   const { post_id } = req.body;
   const user_id = req.user.id; // Suponiendo que tienes el usuario en el objeto de la solicitud
-
+ 
   const addLikeQuery = 
   `
     INSERT INTO LIKES (user_id, post_id) VALUES (?, ?)

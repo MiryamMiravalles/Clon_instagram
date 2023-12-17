@@ -78,7 +78,7 @@ const createPost = async (userId, text, post = '') => {
     if (connection) connection.release();
   }
 };
-
+ 
 export {
   createPost,
   getAllPosts,

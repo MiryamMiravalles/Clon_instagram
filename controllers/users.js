@@ -16,7 +16,7 @@ const newUserController = async (req, res, next) => {
       email: Joi.string().email().required(),
       password: Joi.string().min(8).required(),
     });
-    
+  
     // Validar la solicitud con el esquema
     const { error } = schema.validate(req.body);
     
