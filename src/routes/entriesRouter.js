@@ -1,7 +1,9 @@
 import express from 'express';
 
+// Creación de un enrutador Express
 const router = express.Router();
 
+// Importacón de controladores y middlewares necesarios para manejar las solicitudes de ruta 
 import authUserController from '../middlewares/authUserController.js';
 
 import {
@@ -19,6 +21,7 @@ import {
     commentEntryController
 } from '../controllers/entries/index.js';
 
+// Configuración de las rutas
 router.post('/entries', authUserController, userExistsController, newEntryController);
 
 router.get('/entries', listEntriesController);
@@ -44,7 +47,13 @@ router.post('/entries/:entryId/comments',
             authUserController,
             userExistsController,
             entryExistsController,
-            commentEntryController
+            commentEntryController.addComment
 );
 
+router.delete('/entries/comments/:commentId',
+            authUserController,
+            userExistsController,
+            entryExistsController,
+            commentEntryController.deleteComment
+)
 export default router;
