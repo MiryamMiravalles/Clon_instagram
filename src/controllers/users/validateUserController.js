@@ -1,7 +1,8 @@
-import updateUserRegCodeModel from '../../models/users/updateUserRegCodeModel.js';
+import updateUserRegCodeModel from "../../models/users/updateUserRegCodeModel.js";
 
 const validateUserController = async (req,res,next) => {
     try {
+        
         const {registrationCode} = req.params;
 
         await updateUserRegCodeModel(registrationCode);
@@ -10,7 +11,7 @@ const validateUserController = async (req,res,next) => {
             status: 'ok',
             message: 'Usuario activado'
         });
-
+        
     } catch (error) {
         next(error);
     }

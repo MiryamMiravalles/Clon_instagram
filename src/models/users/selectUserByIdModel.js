@@ -1,4 +1,4 @@
-import getPool from '../../db/getPool.js';
+import getPool from "../../db/getPool.js";
 
 const selectUserByIdModel = async (userId) => {
     const pool = await getPool();
@@ -10,7 +10,7 @@ const selectUserByIdModel = async (userId) => {
             WHERE id = ?
         `,
         [userId]
-    )
+    );
 
     return user[0];
 };

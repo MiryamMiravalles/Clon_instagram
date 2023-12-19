@@ -1,9 +1,7 @@
-import getPool from '../../db/getPool.js';
-import { notFoundError } from '../../services/errorService.js';
-
+import getPool from "../../db/getPool.js";
+import { notFoundError } from "../../services/errorService.js";
 
 const updateUserRegCodeModel = async (registrationCode) => {
-
     const pool = await getPool();
 
     const [user] = await pool.query(
@@ -13,7 +11,7 @@ const updateUserRegCodeModel = async (registrationCode) => {
         [registrationCode]
     );
 
-    if(!user.lenght){
+    if(!user.length){
         notFoundError('usuario');
     }
 
@@ -25,7 +23,6 @@ const updateUserRegCodeModel = async (registrationCode) => {
         `,
         [registrationCode]
     );
-};
+}
 
 export default updateUserRegCodeModel;
-

@@ -1,10 +1,11 @@
-import getPool from "../db/getPool.js";
-import { notFoundError } from "../services/errorService.js";
+import getPool from '../db/getPool.js';
+import {notFoundError} from '../services/errorService.js';
 
-const userExistsController = async (req,res,next) => {
+const userExistsController = async (req, res, next) => {
     try {
         const pool = await getPool();
-        const userId = req.user?.userId || req.params.id;
+
+        const userId = req.params.userId || req.user?.id;
 
         const [user] = await pool.query(
             `
@@ -13,7 +14,7 @@ const userExistsController = async (req,res,next) => {
             [userId]
         );
 
-        if(!user.length) {
+        if (!user.length) {
             notFoundError('usuario');
         }
 
@@ -21,7 +22,7 @@ const userExistsController = async (req,res,next) => {
 
     } catch (error) {
         next(error);
-    };
+    }
 };
 
 export default userExistsController;

@@ -1,34 +1,35 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import { sendMailError } from '../services/errorService.js';
 
 dotenv.config();
 
-const {SMP_HOST, SMP_PORT, SMP_USER, SMP_PASS} = process.env;
+const {SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS} = process.env;
 
 const transport = nodemailer.createTransport({
-    host: SMP_HOST,
-    port: SMP_PORT,
+    host: SMTP_HOST,
+    port: SMTP_PORT,
     auth:{
-        user: SMP_USER,
-        pass: SMP_PASS
+        user: SMTP_USER,
+        pass: SMTP_PASS
     }
 });
 
 const sendMailUtil = async (email, subject, body) => {
     try {
         const mailOptions = {
-            from: SMP_USER,
+            from: SMTP_USER,
             to: email,
             subject,
             text: body
         };
 
-    await transport.sendMail(mailOptions);
+        await transport.sendMail(mailOptions);
 
     } catch (error) {
         console.log(error);
-        senMailError();
+        sendMailError();
     }
-};
+}
 
 export default sendMailUtil;

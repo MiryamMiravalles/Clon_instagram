@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import selectUserByEmailModel from '../../models/users/selectUserByEmailModel.js';
+import selectUserByEmailModel from "../../models/users/selectUserByEmailModel.js";
 
-import { invalidCredentialsError, pendingActivationError} from '../../services/errorService.js';
+import {invalidCredentialsError, pendignActivationError} from '../../services/errorService.js';
 
 const loginUserController = async (req,res,next) => {
     try {
@@ -22,7 +22,7 @@ const loginUserController = async (req,res,next) => {
         }
 
         if(!user.active){
-            pendingActivationError();
+            pendignActivationError();
         }
 
         // generamos el token
@@ -30,7 +30,7 @@ const loginUserController = async (req,res,next) => {
             id: user.id,
             role: user.role
         };
-        
+
         const token = jwt.sign(tokenInfo, process.env.SECRET,{
             expiresIn: '3d'
         });
@@ -41,8 +41,9 @@ const loginUserController = async (req,res,next) => {
                 token,
             }
         })
+
     } catch (error) {
-        next (error);
+        next(error);
     }
 };
 

@@ -2,24 +2,35 @@ import express from 'express';
 
 const router = express.Router();
 
-import {
+import { 
     newUserController,
     loginUserController,
     validateUserController,
-    getOwnUserController
+    getUserProfileController,
+    getOwnUserController,
+    sendRecoverPassController,
+    editUserPasswordController
 } from '../controllers/users/index.js';
 
 import authUserController from '../middlewares/authUserController.js';
 import userExistsController from '../middlewares/userExistsController.js';
-import errorController from '../middlewares/errorController.js';
 
 router.post('/users/register', newUserController);
-router.get('/users/validate/:registrationCode', validateUserController);
+router.get('/users/validate/:registrationCode', validateUserController)
 
-router.post('users/login', loginUserController);
+router.post('/users/login', loginUserController);
 
-router.get('/user/:userId', userExistsController, errorController);
+//obtener el perfil publico del usuario
+router.get('/users/:userId',userExistsController, getUserProfileController);
 
-router.get('/', authUserController, getOwnUserController);
+//obtener el perfil privado del usuario
+router.get('/users',authUserController, getOwnUserController);
+
+//recuperar contraseña --> blanqueo --> envío de mail
+router.post('/users/password/recover', sendRecoverPassController);
+
+//toma el codigo de recuperación enviado en el endpoint anterior y
+//actualiza la contraseña en la base de datos
+router.put('/users/password', editUserPasswordController);
 
 export default router;

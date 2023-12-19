@@ -22,7 +22,7 @@ const initDB = async () => {
         await pool.query('USE instahab');
 
         console.log('Eliminando tablas si existen...');
-        await pool.query('DROP TABLE IF EXISTS users, posts, likes');
+        await pool.query('DROP TABLE IF EXISTS users, posts, likes, comments');
 
         console.log('Creando tablas...');
         await pool.query(`
@@ -35,7 +35,8 @@ const initDB = async () => {
             role ENUM('admin', 'normal') DEFAULT 'normal',
             registrationCode CHAR(30),
             recoverPassCode CHAR(10),
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
             )
         `);
 
@@ -47,8 +48,8 @@ const initDB = async () => {
           image VARCHAR(100) NOT NULL,
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (user_id) REFERENCES users(id)
-        )
-      `);
+          )
+        `);
 
         await pool.query(`
         CREATE TABLE IF NOT EXISTS likes (
@@ -59,21 +60,36 @@ const initDB = async () => {
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (post_id) REFERENCES posts(id),
             UNIQUE KEY unique_like (user_id, post_id) 
-            )
+          )
         `);
 
-  // Ejecutar las consultas para crear las tablas
+        await pool.query(`
+        CREATE TABLE IF NOT EXISTS comments (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            post_id INT NOT NULL,
+            comment_text VARCHAR(280) NOT NULL,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (post_id) REFERENCES posts(id)
+          )
+        `);
 
-  console.log('Tabla "users" creada correctamente.');
+ // Ejecutar las consultas para crear las tablas
 
-  console.log('Tabla "posts" creada correctamente.');
+ console.log('Tabla "users" creada correctamente.');
 
-  console.log('Tabla "likes" creada correctamente.');
+ console.log('Tabla "posts" creada correctamente.');
 
+ console.log('Tabla "likes" creada correctamente.');
+
+ console.log('Tabla "comments" creada correctamente.');
+
+ pool.end();
     } catch (error) {
-        console.log(error);
+        console.error('Ha habido un error al crear la base de datos y las tablas.', error);
+        pool.end();
     }
 };
 
-// Llamar a la función para crear las tablas
 initDB();
