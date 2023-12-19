@@ -12,7 +12,6 @@ export {
     validateUserController,
     getOwnUserController,
     getUserProfileController,
-    getOwnUserController,
     sendRecoverPassController,
     editUserPasswordController
 }
