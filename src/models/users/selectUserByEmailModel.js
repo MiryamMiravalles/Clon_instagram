@@ -13,6 +13,6 @@ const selectUserByEmailModel = async (email) => {
     );
 
     return user[0];
-}
+};
 
 export default selectUserByEmailModel;

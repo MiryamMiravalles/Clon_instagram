@@ -5,6 +5,8 @@ import selectUserByEmailModel from "../../models/users/selectUserByEmailModel.js
 
 import { invalidCredentialsError, pendignActivationError } from '../../services/errorService.js';
 
+import {invalidCredentialsError, pendignActivationError} from '../../services/errorService.js';
+
 const loginUserController = async (req,res,next) => {
     try {
         const {email, password} = req.body;
@@ -45,6 +47,6 @@ const loginUserController = async (req,res,next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export default loginUserController;

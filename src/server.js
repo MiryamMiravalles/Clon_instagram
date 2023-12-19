@@ -1,31 +1,32 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import fileUpload from 'express-fileupload';
-import dotenv from 'dotenv';
 
 import routes from './routes/index.js';
-import { notFoundController, errorController } from './middlewares/index.js';
-
 
 const server = express();
 
-dotenv.config();
-const { UPLOADS_DIR } = process.env;
-
-server.use(morgan('dev'));
+server.use(morgan("dev"));
 server.use(express.json());
-server.use(cors());//acepta pedidos desde cualquier IP
-server.use(express.static(UPLOADS_DIR));
-server.use(fileUpload());
+server.use(cors());
 
-//middleware de rutas
+//middlewares de rutas
 server.use(routes);
 
-//middleware de ruta no encontrada
-server.use(notFoundController)
 
-//middleware de manejo de errores
-server.use(errorController);
+
+server.use((req,res) => {
+    res.status(404).send({
+        status: 'Error!',
+        message: 'Recurso no encontrado'
+    })
+});
+
+server.use((err,req,res,next) => {
+    res.status(err.httpStatus || 500).send({
+        status: 'Error',
+        message: err.message
+    });
+});
 
 export default server;

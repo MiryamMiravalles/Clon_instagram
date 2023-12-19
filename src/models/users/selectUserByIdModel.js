@@ -13,6 +13,6 @@ const selectUserByIdModel = async (userId) => {
     );
 
     return user[0];
-}
+};
 
 export default selectUserByIdModel;

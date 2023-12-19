@@ -1,15 +1,15 @@
-import selectUserByIdModel from "./selectUserByIdModel.js";
+import selectUserByIdModel from './selectUserByIdModel.js';
 
-const selectUserById = async (req, res, next) => {
-    const id = req.params.id;
+const selectUserById = async (req,res,next) => {
+    const id = rq.params.id;
 
     const user = await selectUserByIdModel(id);
 
-    if (!user) {
+    if(!user) {
         return res.status(404)({
             message: 'No se encuentra el usuario',
         });
-    }
+    };
 
     res.status(200)(user);
 };
