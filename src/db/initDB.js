@@ -36,6 +36,8 @@ const initDB = async () => {
             registrationCode CHAR(30),
             recoverPassCode CHAR(10),
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
+
             )
         `);
 
@@ -44,7 +46,9 @@ const initDB = async () => {
           id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
           user_id INT NOT NULL,
           text VARCHAR(280) NOT NULL,
-          image VARCHAR(100),
+          image VARCHAR(100) NOT NULL,
+          text VARCHAR(280),
+          image VARCHAR(100) NOT NULL,
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (user_id) REFERENCES users(id)
           )

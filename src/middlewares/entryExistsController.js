@@ -18,8 +18,8 @@ const entryExistsController = async (req, res, next) => {
 
         next();
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 export default entryExistsController;

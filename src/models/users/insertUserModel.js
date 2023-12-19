@@ -33,16 +33,15 @@ const insertUserModel = async (username, email, password, registrationCode) => {
         emailAllReadyRegistratedError();
     };
 
-
-    // hacer la logica para enviar el email para activar usuario
-    const emailSubject = 'Activa tu usuario de Insta HAB';
+    /**hacer logica de envio de email */
+    const emailSubject = 'Activa tu usuario de Diario de Viajes';
 
     const emailBody = `
-        !Bienvenid@ ${username}!
+            !!!Bienvenid@ ${username}¡¡¡¡¡
 
-        Gracias por registrarte en Insta HAb. Para activar tu cuenta haz click en el siguiente enlace:
-    
-        <a href="http://localhost:3001/users/validate/${registrationCode}">Activar mi cuenta</a>
+            Gracias por registrarse en Diario de Viajes. Para activar tu cuenta haga click en el siguiente enlace:
+
+            <a href="http://localhost:3001/users/validate/${registrationCode}">Activar mi cuenta</a>
     `
 
     await sendMailUtil(email,emailSubject,emailBody);
@@ -56,6 +55,6 @@ const insertUserModel = async (username, email, password, registrationCode) => {
         `,
         [username, email, hashedPassword, registrationCode]
     );
-}
+};
 
 export default insertUserModel;

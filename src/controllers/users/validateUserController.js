@@ -15,6 +15,6 @@ const validateUserController = async (req,res,next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export default validateUserController;

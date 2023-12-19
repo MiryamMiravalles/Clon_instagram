@@ -45,6 +45,6 @@ const loginUserController = async (req,res,next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export default loginUserController;

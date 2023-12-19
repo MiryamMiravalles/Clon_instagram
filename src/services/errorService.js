@@ -94,7 +94,7 @@ export const photoLimitError = () => {
     }
 }
 
-export const revoveryCodeError = () => {
+export const recoveryCodeError = () => {
     throw {
         httpStatus: 401,
         code: 'INVALID_RECOVER_CODE',
