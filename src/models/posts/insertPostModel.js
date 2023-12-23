@@ -5,10 +5,10 @@ const insertPostModel = async (text, image, userId) => {
 
     const [result] = await pool.query(
         `
-            INSERT INTO posts (text, image, userId)
-            VALUE ( ?, ?, ?)
+            INSERT INTO posts (text, userId)
+            VALUE (?,?)
         `,
-        [text, image, userId]
+        [text, userId]
     );
     
     console.log(result);

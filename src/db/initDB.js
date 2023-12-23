@@ -22,7 +22,7 @@ const initDB = async () => {
         await pool.query('USE instahab');
 
         console.log('Eliminando tablas si existen...');
-        await pool.query('DROP TABLE IF EXISTS users, posts, postPhotos, likes, comments');
+        await pool.query('DROP TABLE IF EXISTS users, posts, postPhotos, postLikes, postComments');
 
         console.log('Creando tablas...');
         await pool.query(`
@@ -35,7 +35,7 @@ const initDB = async () => {
             role ENUM('admin', 'normal') DEFAULT 'normal',
             registrationCode CHAR(30),
             recoverPassCode CHAR(10),
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
 
             )
@@ -44,11 +44,10 @@ const initDB = async () => {
         await pool.query(`
         CREATE TABLE IF NOT EXISTS posts (
           id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-          user_id INT NOT NULL,
           text VARCHAR(280),
-          image VARCHAR(100) NOT NULL,
+          userId INT NOT NULL,
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id)
+          FOREIGN KEY (userId) REFERENCES users(id)
           )
         `);
 
@@ -64,26 +63,27 @@ const initDB = async () => {
 
 
         await pool.query(`
-        CREATE TABLE IF NOT EXISTS postlikes (
+        CREATE TABLE IF NOT EXISTS postLikes (
             id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-            user_id INT NOT NULL,
-            post_id INT NOT NULL,
+            value TINYINT UNSIGNED NOT NULL,
+            userId INT NOT NULL,
+            postId INT NOT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (post_id) REFERENCES posts(id),
-            UNIQUE KEY unique_like (user_id, post_id) 
+            FOREIGN KEY (userId) REFERENCES users(id),
+            FOREIGN KEY (postId) REFERENCES posts(id),
+            UNIQUE KEY unique_like (userId, postId)
           )
         `);
 
         await pool.query(`
-        CREATE TABLE IF NOT EXISTS comments (
+        CREATE TABLE IF NOT EXISTS postComments (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT NOT NULL,
-            post_id INT NOT NULL,
+            userId INT NOT NULL,
+            postId INT NOT NULL,
             comment_text VARCHAR(280) NOT NULL,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (post_id) REFERENCES posts(id)
+            FOREIGN KEY (userId) REFERENCES users(id),
+            FOREIGN KEY (postId) REFERENCES posts(id)
           )
         `);
 

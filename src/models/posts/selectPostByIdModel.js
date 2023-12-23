@@ -6,13 +6,13 @@ const selectPostByIdModel = async (postId) => {
 
     const [post] = await pool.query(
         `
-            SELECT p.id, p.text,p.image u.username, p.userId, AVG(IFNULL(l.value,0)) AS likes, p.createdAt
-            FROM posts p
-            LEFT JOIN postlikes p ON p.postId = p.id
-            INNER JOIN users u On u.id = p.userId
-            WHERE p.id = ${postId}
-            GROUP BY p.id
-            ORDER BY p.createdAt DESC
+        SELECT p.id, p.text, u.username, p.userId, AVG(IFNULL(l.value,0)) AS likes, p.createdAt
+        FROM posts p
+        LEFT JOIN postlikes l ON l.postId = p.id
+        INNER JOIN users u On u.id = p.userId
+        WHERE p.id = ${postId}
+        GROUP BY p.id
+        ORDER BY p.createdAt DESC
         `
     );
 

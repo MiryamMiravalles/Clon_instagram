@@ -1,7 +1,7 @@
 import { commentNotFoundError, unauthorizedCommentDeletionError } from '../../services/errorService.js';
 import insertCommentModel from '../../models/posts/insertCommentModel.js';
 
-const commentEntryController = {};
+const commentPostController = {};
 
 // Para añadir comentario
 commentPostController.addComment = async (req, res) => {

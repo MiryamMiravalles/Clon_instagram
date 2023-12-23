@@ -55,4 +55,4 @@ export const deletePhotoService = async (imgName) => {
     } catch (error) {
         deleteFileError();
     }
-}
+};
