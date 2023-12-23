@@ -5,7 +5,7 @@ const insertPhotoModel = async (photoName, postId) => {
 
     const [result] = await pool.query(
         `
-            INSERT INTO posts (name, postId)
+            INSERT INTO postPhotos (name, postId)
             VALUES (?, ?)
         `,
         [photoName, postId]

@@ -30,8 +30,7 @@ const newPostController = async (req, res, next) => {
             data:{
                 post:{
                     id: postId, 
-                    text, 
-                    image,                  
+                    text,                 
                     userId: req.user.id,
                     photos,
                     createdAt: new Date()
