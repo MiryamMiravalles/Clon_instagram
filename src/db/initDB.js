@@ -22,7 +22,7 @@ const initDB = async () => {
         await pool.query('USE instahab');
 
         console.log('Eliminando tablas si existen...');
-        await pool.query('DROP TABLE IF EXISTS users, posts, likes, comments');
+        await pool.query('DROP TABLE IF EXISTS users, posts, postPhotos, likes, comments');
 
         console.log('Creando tablas...');
         await pool.query(`
@@ -45,8 +45,6 @@ const initDB = async () => {
         CREATE TABLE IF NOT EXISTS posts (
           id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
           user_id INT NOT NULL,
-          text VARCHAR(280) NOT NULL,
-          image VARCHAR(100) NOT NULL,
           text VARCHAR(280),
           image VARCHAR(100) NOT NULL,
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -55,7 +53,18 @@ const initDB = async () => {
         `);
 
         await pool.query(`
-        CREATE TABLE IF NOT EXISTS likes (
+        CREATE TABLE IF NOT EXISTS postPhotos (
+            id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+            name VARCHAR(100) NOT NULL,
+            postId INT NOT NULL,
+            FOREIGN KEY (postId) REFERENCES posts(id),
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+`);
+
+
+        await pool.query(`
+        CREATE TABLE IF NOT EXISTS postlikes (
             id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
             user_id INT NOT NULL,
             post_id INT NOT NULL,
@@ -84,13 +93,15 @@ const initDB = async () => {
 
  console.log('Tabla "posts" creada correctamente.');
 
- console.log('Tabla "likes" creada correctamente.');
+ console.log('Tabla "postPhotos" creada correctamente.');
+
+ console.log('Tabla "postlikes" creada correctamente.');
 
  console.log('Tabla "comments" creada correctamente.');
 
  pool.end();
     } catch (error) {
-        console.error('Ha habido un error al crear la base de datos y las tablas.', error);
+        console.error('Ha habido un error al crear:', error);
         pool.end();
     }
 };

@@ -1,8 +1,8 @@
 import { likeAlreadyExistsError } from '../../services/errorService.js';
-import insertLikeModel from '../../models/entries/insertLikeModel.js';
-import deleteLikeModel from '../../models/entries/deleteLikeModel.js';
+import insertLikeModel from '../../models/posts/insertLikeModel.js';
+import deleteLikeModel from '../../models/posts/deleteLikeModel.js';
 
-const likeEntryController = async (req, res, next) => {
+const likePostController = async (req, res, next) => {
     try {
         const postId = req.params.postId;
         const userId = req.user.id;
@@ -42,4 +42,4 @@ const likeEntryController = async (req, res, next) => {
     }
 };
 
-export default likeEntryController;
+export default likePostController;
