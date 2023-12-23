@@ -6,9 +6,10 @@ const insertCommentModel = async (userId, postId, text) => {
     try {
         
         // Insertar el comentario en la tabla 'comments' sin verificar existencia previa
-        await connection.execute(
+        await pool.execute(
             `
-                INSERT INTO comments (userId, postId, text) VALUES (?, ?, ?)
+                INSERT INTO comments (userId, postId, text) 
+                VALUES (?, ?, ?)
             `,
             [userId, postId, text]
         );
@@ -17,7 +18,7 @@ const insertCommentModel = async (userId, postId, text) => {
     } catch (error) {
         throw error;
     } finally {
-        await connection.release();
+        await pool.release();
     }
 };
 

@@ -34,14 +34,14 @@ const insertUserModel = async (username, email, password, registrationCode) => {
     };
 
     /**hacer logica de envio de email */
-    const emailSubject = 'Activa tu usuario de Diario de Viajes';
+    const emailSubject = 'Activa tu usuario de INSTAHAB';
 
     const emailBody = `
-            !!!Bienvenid@ ${username}¡¡¡¡¡
+    👋 !!!Bienvenid@ ${username}¡¡¡¡¡👋
 
-            Gracias por registrarse en Diario de Viajes. Para activar tu cuenta haga click en el siguiente enlace:
+            Gracias por registrarse en  📷 INSTAHAB. Para activar tu cuenta haga click en el siguiente enlace:
 
-            <a href="http://localhost:3001/users/validate/${registrationCode}">Activar mi cuenta</a>
+            <a href="http://localhost:3001/users/validate/${registrationCode}">❤️ Activar mi cuenta ❤️ </a>
     `
 
     await sendMailUtil(email,emailSubject,emailBody);

@@ -6,8 +6,8 @@ const deleteLikeModel = async (postId, userId) => {
     // Vertificar si el usuario ya le dio "Like"
     const [like] = await pool.query(
         `
-            SELECT id FROM entrylikes
-            WHERE userId = ? AND entryId = ?
+            SELECT id FROM postlikes
+            WHERE userId = ? AND postId = ?
         `,
         [userId, postId]
     );
@@ -16,8 +16,8 @@ const deleteLikeModel = async (postId, userId) => {
     if (like.length) {
         await pool.query(
             `
-                DELETE FROM entrylikes
-                WHERE userId = ? AND entryId = ?
+                DELETE FROM postlikes
+                WHERE userId = ? AND postId = ?
             `,
             [userId, postId]
         );
@@ -26,7 +26,7 @@ const deleteLikeModel = async (postId, userId) => {
     // Obtener el promedio de los "Likes" restantes
     const [likesAvg] = await pool.query(
         `
-            SELECT AVG(value) AS avg FROM entrylikes WHERE entryId = ${postId}
+            SELECT AVG(value) AS avg FROM postlikes WHERE postId = ${postId}
         `
     );
 

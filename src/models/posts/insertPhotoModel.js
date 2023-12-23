@@ -1,14 +1,14 @@
 import getPool from '../../db/getPool.js';
 
-const insertPhotoModel = async (photoName, entryId) => {
+const insertPhotoModel = async (photoName, postId) => {
     const pool = await getPool();
 
     const [result] = await pool.query(
         `
-            INSERT INTO posts (name, entryId)
+            INSERT INTO posts (name, postId)
             VALUES (?, ?)
         `,
-        [photoName, entryId]
+        [photoName, postId]
     );
 
     const { insertId } = result;

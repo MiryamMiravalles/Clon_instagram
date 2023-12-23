@@ -13,11 +13,11 @@ const updateRecoverPassModel = async (email, recoverPassCode) => {
         [recoverPassCode, email]
     );
 
-    const subject = 'Recuperación de contraseña de InstaHAB';
+    const subject = 'Recuperación de contraseña de INSTAHAB';
 
     const body = 
         `
-            Se ha solicitado la recuperación de la contraseña de InstaHAB de esta cuenta.
+            Se ha solicitado la recuperación de la contraseña de INSTAHAB de esta cuenta.
             
             Para crear una nueva contraseña utiliza el siguiente código de recuperación: ${recoverPassCode}
 

@@ -1,10 +1,10 @@
 import { commentNotFoundError, unauthorizedCommentDeletionError } from '../../services/errorService.js';
-import insertCommentModel from '../../models/entries/insertCommentModel.js';
+import insertCommentModel from '../../models/posts/insertCommentModel.js';
 
 const commentEntryController = {};
 
 // Para añadir comentario
-commentEntryController.addComment = async (req, res) => {
+commentPostController.addComment = async (req, res) => {
     const { postId, text } = req.body;
     const userId = req.user.id;
 
@@ -19,7 +19,7 @@ commentEntryController.addComment = async (req, res) => {
 };
 
 // Para borrar comentario
-commentEntryController.deleteComment = async (req, res) => {
+commentPostController.deleteComment = async (req, res) => {
     const { commentId } = req.params;
     const userId = req.user.id;
 
@@ -49,4 +49,4 @@ commentEntryController.deleteComment = async (req, res) => {
     }
 };
 
-export default commentEntryController;
+export default commentPostController;
