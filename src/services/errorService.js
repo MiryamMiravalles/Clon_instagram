@@ -117,3 +117,9 @@ export const unauthorizedCommentDeletionError = () => {
         message: 'No tienes permisos para eliminar este comentario'
     }
 }
+
+const likeDoesNotExistError = () => {
+    const error = new Error('Like does not exist');
+    error.httpStatusCode = 404;
+    throw error;
+};

@@ -18,7 +18,9 @@ import {
     getPostController,
     likePostController, 
     addPostPhotoController,
-    commentPostController
+    commentPostController,
+    deleteCommentController,
+    deleteLikeController
 } from '../controllers/posts/index.js';
 
 // Configuración de las rutas
@@ -28,14 +30,14 @@ router.get('/posts', listPostsController);
 
 router.get('/posts/:postId', postExistsController, getPostController);
 
-router.post('/posts/:postId/postlikes',
+router.post('/posts/:postId/likes',
             authUserController,
             userExistsController,
             postExistsController,
             likePostController  
 );
 
-router.post('/posts/:postId/postPhotos',
+router.post('/posts/:postId/photos',
             authUserController,
             userExistsController,
             postExistsController,
@@ -50,10 +52,18 @@ router.post('/posts/:postId/comments',
             commentPostController.addComment
 );
 
-router.delete('/posts/comments/:commentId',
+router.delete('/deleteComment/:postId/:commentId',
             authUserController,
             userExistsController,
             postExistsController,
-            commentPostController.deleteComment
+            deleteCommentController
 )
+
+router.delete('/deleteLike/:postId/:likeId',
+            authUserController,
+            userExistsController,
+            postExistsController,
+            deleteLikeController
+)
+
 export default router;

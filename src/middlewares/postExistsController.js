@@ -1,25 +1,25 @@
-import getPool from "../db/getPool.js";
-import { notFoundError } from "../services/errorService.js";
+import selectPostByIdModel from '../models/posts/selectPostByIdModel.js';
 
 const postExistsController = async (req, res, next) => {
-
-    try{
-        const pool = await getPool();
-        
+    try {
         const {postId} = req.params;
 
-        const [post] = await pool.query(
-            `
-                SELECT id FROM posts WHERE id = ${postId}
-            `
-        );
+        const post = await selectPostByIdModel(postId);
 
-        if(post.length < 1) notFoundError('post');
+        if (!post) {
+            return res.status(404).send({
+                status: 'fail',
+                message: 'Post not found'
+            });
+        }
 
+        req.post = post;
+        req.postUserId = post.userId;
         next();
+    
     } catch (error) {
         next(error);
     }
-};
+}
 
 export default postExistsController;

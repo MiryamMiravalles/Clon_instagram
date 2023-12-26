@@ -1,24 +1,30 @@
 import getPool from "../../db/getPool.js";
 
-const insertCommentModel = async (userId, postId, text) => {
-    const pool = await getPool();
+const insertCommentModel = async (comment, userId, postId) => {
 
     try {
-        
+        const pool = await getPool();
         // Insertar el comentario en la tabla 'comments' sin verificar existencia previa
         await pool.execute(
             `
-                INSERT INTO comments (userId, postId, text) 
+                INSERT INTO postcomments (\`comment\`, userId, postId) 
                 VALUES (?, ?, ?)
             `,
-            [userId, postId, text]
+            [comment, userId, postId]
+        );
+
+        // Incrementar el conteo de comentarios en la tabla 'posts'
+        await pool.execute(
+            `
+                UPDATE posts SET commentCount = commentCount + 1 WHERE id = ?
+            `,
+            [postId]
         );
 
         return true;
+  
     } catch (error) {
-        throw error;
-    } finally {
-        await pool.release();
+            console.log(error);
     }
 };
 

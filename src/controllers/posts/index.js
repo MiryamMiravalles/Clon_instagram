@@ -4,6 +4,8 @@ import getPostController from "./getPostController.js";
 import likePostController from "./likePostController.js";
 import addPostPhotoController from "./addPostPhotoController.js";
 import commentPostController from "./commentPostController.js";
+import deleteCommentController from "./deleteCommentController.js";
+import deleteLikeController from "./deleteLikeController.js";
 
 export {
     newPostController,
@@ -11,5 +13,7 @@ export {
     getPostController,
     likePostController,
     addPostPhotoController,
-    commentPostController
+    commentPostController,
+    deleteCommentController,
+    deleteLikeController
 }

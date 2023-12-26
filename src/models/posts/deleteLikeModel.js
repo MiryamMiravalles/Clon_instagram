@@ -1,36 +1,32 @@
+// deleteLikeModel.js
+
 import getPool from "../../db/getPool.js";
 
-const deleteLikeModel = async (postId, userId) => {
+const deleteLikeModel = async (userId, postId, likeId) => {
     const pool = await getPool();
+    try {
+        const [result] = await pool.query(
+            `
+                SELECT id FROM postlikes WHERE userId = ? AND postId = ? AND id = ?
+            `,
+            [userId, postId, likeId]
+        );
 
-    // Vertificar si el usuario ya le dio "Like"
-    const [like] = await pool.query(
-        `
-            SELECT id FROM postlikes
-            WHERE userId = ? AND postId = ?
-        `,
-        [userId, postId]
-    );
+        if (!result.length) {
+            return null;
+        }
 
-    // Si existe el "Like", poder eliminarlo
-    if (like.length) {
         await pool.query(
             `
-                DELETE FROM postlikes
-                WHERE userId = ? AND postId = ?
+                DELETE FROM postlikes WHERE userId = ? AND postId = ? AND id = ?
             `,
-            [userId, postId]
+            [userId, postId, likeId]
         );
+
+        return result[0];
+    } catch (error) {
+        throw error;
     }
-
-    // Obtener el promedio de los "Likes" restantes
-    const [likesAvg] = await pool.query(
-        `
-            SELECT AVG(value) AS avg FROM postlikes WHERE postId = ${postId}
-        `
-    );
-
-    return Number(likesAvg[0].avg);
 };
 
 export default deleteLikeModel;

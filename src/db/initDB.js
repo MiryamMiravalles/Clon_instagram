@@ -7,9 +7,6 @@ import {v4 as uuidv4} from 'uuid';
 // Generar un UUID
 const newUUID = uuidv4();
 
-console.log("MYSQL_USER", process.env.MYSQL_USER)
-
-
 const initDB = async () => {
     try {
         let pool = await getPool();
@@ -45,8 +42,10 @@ const initDB = async () => {
         CREATE TABLE IF NOT EXISTS posts (
           id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
           text VARCHAR(280),
+          likesAvg DOUBLE DEFAULT 0,
           userId INT NOT NULL,
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
           FOREIGN KEY (userId) REFERENCES users(id)
           )
         `);
@@ -57,7 +56,8 @@ const initDB = async () => {
             name VARCHAR(100) NOT NULL,
             postId INT NOT NULL,
             FOREIGN KEY (postId) REFERENCES posts(id),
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
         )
 `);
 
@@ -69,6 +69,7 @@ const initDB = async () => {
             userId INT NOT NULL,
             postId INT NOT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (userId) REFERENCES users(id),
             FOREIGN KEY (postId) REFERENCES posts(id),
             UNIQUE KEY unique_like (userId, postId)
@@ -78,10 +79,11 @@ const initDB = async () => {
         await pool.query(`
         CREATE TABLE IF NOT EXISTS postComments (
             id INT AUTO_INCREMENT PRIMARY KEY,
+            comment TEXT,
             userId INT NOT NULL,
             postId INT NOT NULL,
-            comment_text VARCHAR(280) NOT NULL,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (userId) REFERENCES users(id),
             FOREIGN KEY (postId) REFERENCES posts(id)
           )
